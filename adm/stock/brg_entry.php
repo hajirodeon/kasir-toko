@@ -102,13 +102,13 @@ if ($s == "edit")
 	{
 	$brgkd = nosql($_REQUEST['brgkd']);
 
-	$qx = mysql_query("SELECT m_brg.*, m_brg.kode AS mbkod, ".
+	$qx = mysqli_query($koneksi, "SELECT m_brg.*, m_brg.kode AS mbkod, ".
 						"m_brg.barkode AS mbbar, ".
 						"m_brg.nama AS mbnm, stock.* ".
 						"FROM m_brg, stock ".
 						"WHERE stock.kd_brg = m_brg.kd ".
 						"AND m_brg.kd = '$brgkd'");
-	$rowx = mysql_fetch_assoc($qx);
+	$rowx = mysqli_fetch_assoc($qx);
 
 	$merkkd = nosql($rowx['kd_merk']);
 	$katkd = nosql($rowx['kd_kategori']);
@@ -183,16 +183,16 @@ if ($_POST['btnSMP'])
 		else
 			{
 			///cek kode
-			$qcc = mysql_query("SELECT * FROM m_brg ".
+			$qcc = mysqli_query($koneksi, "SELECT * FROM m_brg ".
 									"WHERE kode = '$kode'");
-			$rcc = mysql_fetch_assoc($qcc);
-			$tcc = mysql_num_rows($qcc);
+			$rcc = mysqli_fetch_assoc($qcc);
+			$tcc = mysqli_num_rows($qcc);
 
 			///cek barcode
-			$qcc1 = mysql_query("SELECT * FROM m_brg ".
+			$qcc1 = mysqli_query($koneksi, "SELECT * FROM m_brg ".
 									"WHERE barkode = '$barkode'");
-			$rcc1 = mysql_fetch_assoc($qcc1);
-			$tcc1 = mysql_num_rows($qcc1);
+			$rcc1 = mysqli_fetch_assoc($qcc1);
+			$tcc1 = mysqli_num_rows($qcc1);
 			$cc1_barkode = nosql($rcc1['barkode']);
 
 			//nek ada
@@ -243,13 +243,13 @@ if ($_POST['btnSMP'])
 				else
 					{
 					//ke m_brg
-					mysql_query("INSERT INTO m_brg(kd, kd_merk, kd_kategori, kd_satuan, kode, barkode, nama, postdate) VALUES ".
+					mysqli_query($koneksi, "INSERT INTO m_brg(kd, kd_merk, kd_kategori, kd_satuan, kode, barkode, nama, postdate) VALUES ".
 									"('$x', '$merkkd', '$katkd', '$stkd', '$kode', '$barkode', '$nama', '$today')");
 
 					//ke stock
 					$xi = md5($today3);
 
-					mysql_query("INSERT INTO stock(kd, kd_brg, jml_toko, jml_min, hrg_beli, hrg_jual, persen) VALUES ".
+					mysqli_query($koneksi, "INSERT INTO stock(kd, kd_brg, jml_toko, jml_min, hrg_beli, hrg_jual, persen) VALUES ".
 									"('$xi', '$x', '$jml_toko', '$jml_min', '$hrg_beli', '$hrg_jual', '$prs_tung')");
 
 					//null-kan
@@ -297,19 +297,19 @@ Kategori : <br>';
 echo "<select name=\"kategori\" onChange=\"MM_jumpMenu('self',this,0)\" class=\"btn btn-info\">";
 
 //terpilih
-$qsupx = mysql_query("SELECT * FROM m_kategori ".
+$qsupx = mysqli_query($koneksi, "SELECT * FROM m_kategori ".
 						"WHERE kd = '$katkd'");
-$rsupx = mysql_fetch_assoc($qsupx);
+$rsupx = mysqli_fetch_assoc($qsupx);
 $supx_kd = nosql($rsupx['kd']);
 $supx_nm = balikin($rsupx['kategori']);
 
 echo '<option value="'.$supx_kd.'" selected>'.$supx_nm.'</option>';
 
 //query
-$qsup = mysql_query("SELECT * FROM m_kategori ".
+$qsup = mysqli_query($koneksi, "SELECT * FROM m_kategori ".
 						"WHERE kd <> '$katkd' ".
 						"ORDER BY kategori ASC");
-$rsup = mysql_fetch_assoc($qsup);
+$rsup = mysqli_fetch_assoc($qsup);
 
 do
 	{
@@ -318,7 +318,7 @@ do
 
 	echo '<option value="'.$filenya.'?katkd='.$sup_kd.'">'.$sup_sing.'</option>';
 	}
-while ($rsup = mysql_fetch_assoc($qsup));
+while ($rsup = mysqli_fetch_assoc($qsup));
 
 echo '</select>
 <br>
@@ -329,19 +329,19 @@ Merk :
 echo "<select name=\"merk\" onChange=\"MM_jumpMenu('self',this,0)\" class=\"btn btn-info\">";
 
 //terpilih
-$qmerx = mysql_query("SELECT * FROM m_merk ".
+$qmerx = mysqli_query($koneksi, "SELECT * FROM m_merk ".
 						"WHERE kd = '$merkkd'");
-$rmerx = mysql_fetch_assoc($qmerx);
+$rmerx = mysqli_fetch_assoc($qmerx);
 $merx_kd = nosql($rmerx['kd']);
 $merx_nm = balikin($rmerx['merk']);
 
 echo '<option value="'.$merx_kd.'" selected>'.$merx_nm.'</option>';
 
 //query
-$qmer = mysql_query("SELECT * FROM m_merk ".
+$qmer = mysqli_query($koneksi, "SELECT * FROM m_merk ".
 						"WHERE kd <> '$merkd' ".
 						"ORDER BY merk ASC");
-$rmer = mysql_fetch_assoc($qmer);
+$rmer = mysqli_fetch_assoc($qmer);
 
 do
 	{
@@ -350,7 +350,7 @@ do
 
 	echo '<option value="'.$filenya.'?katkd='.$katkd.'&merkkd='.$mer_kd.'">'.$mer_sing.'</option>';
 	}
-while ($rmer = mysql_fetch_assoc($qmer));
+while ($rmer = mysqli_fetch_assoc($qmer));
 
 echo '</select>
 <br>
@@ -373,19 +373,19 @@ if (empty($stkd))
 	}
 else
 	{
-	$qstx = mysql_query("SELECT * FROM m_satuan ".
+	$qstx = mysqli_query($koneksi, "SELECT * FROM m_satuan ".
 							"WHERE kd = '$stkd'");
-	$rstx = mysql_fetch_assoc($qstx);
+	$rstx = mysqli_fetch_assoc($qstx);
 	$stx = balikin($rstx['satuan']);
 
 	echo '<option value="'.$stkd.'" selected>'.$stx.'</option>';
 	}
 
 //satuan
-$qst = mysql_query("SELECT * FROM m_satuan ".
+$qst = mysqli_query($koneksi, "SELECT * FROM m_satuan ".
 						"WHERE kd <> '$stkd' ".
 						"ORDER BY satuan ASC");
-$rst = mysql_fetch_assoc($qst);
+$rst = mysqli_fetch_assoc($qst);
 
 do
 	{
@@ -394,7 +394,7 @@ do
 
 	echo '<option value="'.$stkd.'">'.$st.'</option>';
 	}
-while ($rst = mysql_fetch_assoc($qst));
+while ($rst = mysqli_fetch_assoc($qst));
 
 
 echo '</select>
@@ -491,12 +491,12 @@ $sqlcount = "SELECT m_brg.*, m_brg.kd AS mbkd, stock.* ".
 
 $sqlresult = $sqlcount;
 
-$count = mysql_num_rows(mysql_query($sqlcount));
+$count = mysqli_num_rows(mysqli_query($sqlcount));
 $pages = $p->findPages($count, $limit);
-$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 $target = "$filenya?katcari=$katcari&kunci=$kunci";
 $pagelist = $p->pageList($_GET['page'], $pages, $target);
-$data = mysql_fetch_array($result);
+$data = mysqli_fetch_array($result);
 
 
 
@@ -536,23 +536,23 @@ if ($count != 0)
 
 		//kategori
 		$katkd = nosql($data['kd_kategori']);
-		$qikat = mysql_query("SELECT * FROM m_kategori ".
+		$qikat = mysqli_query($koneksi, "SELECT * FROM m_kategori ".
 								"WHERE kd = '$katkd'");
-		$rikat = mysql_fetch_assoc($qikat);
+		$rikat = mysqli_fetch_assoc($qikat);
 		$ikat_kat = balikin($rikat['kategori']);
 
 		//satuan
 		$stkd = nosql($data['kd_satuan']);
-		$qist = mysql_query("SELECT * FROM m_satuan ".
+		$qist = mysqli_query($koneksi, "SELECT * FROM m_satuan ".
 								"WHERE kd = '$stkd'");
-		$rist = mysql_fetch_assoc($qist);
+		$rist = mysqli_fetch_assoc($qist);
 		$ist_st = balikin($rist['satuan']);
 
 		//mer
 		$merkkd = nosql($data['kd_merk']);
-		$qimerk = mysql_query("SELECT * FROM m_merk ".
+		$qimerk = mysqli_query($koneksi, "SELECT * FROM m_merk ".
 								"WHERE kd = '$merkkd'");
-		$rimerk = mysql_fetch_assoc($qimerk);
+		$rimerk = mysqli_fetch_assoc($qimerk);
 		$imerk_merk = balikin($rimerk['merk']);
 
 
@@ -611,7 +611,7 @@ if ($count != 0)
 		<td align="right">'.$hrg_jual.'</td>
         </tr>';
 		}
-	while ($data = mysql_fetch_assoc($result));
+	while ($data = mysqli_fetch_assoc($result));
 	}
 
 

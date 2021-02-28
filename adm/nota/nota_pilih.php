@@ -107,12 +107,12 @@ if ($_POST['btnCRI'])
 
 			$sqlresult = $sqlcount;
 
-			$count = mysql_num_rows(mysql_query($sqlcount));
+			$count = mysqli_num_rows(mysqli_query($sqlcount));
 			$pages = $p->findPages($count, $limit);
-			$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+			$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 			$target = "$filenya?xtgl1=$xtgl1&xbln1=$xbln1&xthn1=$xthn1";
 			$pagelist = $p->pageList($_GET['page'], $pages, $target);
-			$data = mysql_fetch_array($result);
+			$data = mysqli_fetch_array($result);
 			}
 
 		//nek pelanggan ==> c02
@@ -128,12 +128,12 @@ if ($_POST['btnCRI'])
 
 			$sqlresult = $sqlcount;
 
-			$count = mysql_num_rows(mysql_query($sqlcount));
+			$count = mysqli_num_rows(mysqli_query($sqlcount));
 			$pages = $p->findPages($count, $limit);
-			$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+			$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 			$target = "$filenya?xtgl1=$xtgl1&xbln1=$xbln1&xthn1=$xthn1";
 			$pagelist = $p->pageList($_GET['page'], $pages, $target);
-			$data = mysql_fetch_array($result);
+			$data = mysqli_fetch_array($result);
 			}
 		}
 	} ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -148,12 +148,12 @@ else
 
 	$sqlresult = $sqlcount;
 
-	$count = mysql_num_rows(mysql_query($sqlcount));
+	$count = mysqli_num_rows(mysqli_query($sqlcount));
 	$pages = $p->findPages($count, $limit);
-	$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+	$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 	$target = "$filenya?xtgl1=$xtgl1&xbln1=$xbln1&xthn1=$xthn1";
 	$pagelist = $p->pageList($_GET['page'], $pages, $target);
-	$data = mysql_fetch_array($result);
+	$data = mysqli_fetch_array($result);
 	}
 
 
@@ -192,16 +192,16 @@ echo "<select name=\"xthn1\" onChange=\"MM_jumpMenu('self',this,0)\" class=\"btn
 echo '<option value="'.$xthn1.'" selected>'.$xthn1.'</option>';
 
 //query
-$qthn = mysql_query("SELECT * FROM m_tahun ".
+$qthn = mysqli_query($koneksi, "SELECT * FROM m_tahun ".
 						"ORDER BY tahun DESC");
-$rthn = mysql_fetch_assoc($qthn);
+$rthn = mysqli_fetch_assoc($qthn);
 
 do
 	{
 	$x_thn = nosql($rthn['tahun']);
 	echo '<option value="'.$filenya.'?xtgl1='.$xtgl1.'&xbln1='.$xbln1.'&xthn1='.$x_thn.'">'.$x_thn.'</option>';
 	}
-while ($rthn = mysql_fetch_assoc($qthn));
+while ($rthn = mysqli_fetch_assoc($qthn));
 
 echo '</select>
 </td>
@@ -259,12 +259,12 @@ if ($count != 0)
 
 
 		//jml. jenis barang ////////////////////////////////////////////////////////
-		$qtem = mysql_query("SELECT nota_detail.*, m_brg.*  ".
+		$qtem = mysqli_query($koneksi, "SELECT nota_detail.*, m_brg.*  ".
 								"FROM nota_detail, m_brg ".
 								"WHERE nota_detail.kd_brg = m_brg.kd ".
 								"AND nota_detail.kd_nota = '$x_kd'");
-		$rtem = mysql_fetch_assoc($qtem);
-		$ttem = mysql_num_rows($qtem);
+		$rtem = mysqli_fetch_assoc($qtem);
+		$ttem = mysqli_num_rows($qtem);
 
 
 		//nek null
@@ -276,10 +276,10 @@ if ($count != 0)
 
 
 		//jml. item ////////////////////////////////////////////////////////
-		$qtem1 = mysql_query("SELECT SUM(qty) AS jml ".
+		$qtem1 = mysqli_query($koneksi, "SELECT SUM(qty) AS jml ".
 								"FROM nota_detail ".
 								"WHERE kd_nota = '$x_kd'");
-		$rtem1 = mysql_fetch_assoc($qtem1);
+		$rtem1 = mysqli_fetch_assoc($qtem1);
 		$tem_jml = nosql($rtem1['jml']);
 
 		//nek null
@@ -290,9 +290,9 @@ if ($count != 0)
 
 
 		//jml. subtotal //////////////////////////////////////////////////////////////
-		$qstot = mysql_query("SELECT SUM(subtotal) AS subtotal FROM nota_detail ".
+		$qstot = mysqli_query($koneksi, "SELECT SUM(subtotal) AS subtotal FROM nota_detail ".
 								"WHERE kd_nota = '$x_kd'");
-		$rstot = mysql_fetch_assoc($qstot);
+		$rstot = mysqli_fetch_assoc($qstot);
 		$stot_subtotal = nosql($rstot['subtotal']);
 
 		//nek null
@@ -318,7 +318,7 @@ if ($count != 0)
 		<td align="right">'.$stot_subtotalx.'</td>
         </tr>';
 		}
-	while ($data = mysql_fetch_assoc($result));
+	while ($data = mysqli_fetch_assoc($result));
 	}
 
 

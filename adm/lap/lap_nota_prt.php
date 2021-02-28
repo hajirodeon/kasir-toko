@@ -47,7 +47,7 @@ $diload = "window.print();location.href='$ke';";
 ob_start();
 
 //query
-$qdata = mysql_query("SELECT nota.*, nota_detail.*, ".
+$qdata = mysqli_query($koneksi, "SELECT nota.*, nota_detail.*, ".
 						"nota_detail.kd AS ndkd, ".
 						"nota_detail.qty AS ndqty, ".
 						"m_brg.*, m_satuan.*, stock.* ".
@@ -58,8 +58,8 @@ $qdata = mysql_query("SELECT nota.*, nota_detail.*, ".
 						"AND stock.kd_brg = m_brg.kd ".
 						"AND nota.kd = '$notakd' ".
 						"ORDER BY nota.no_nota ASC");
-$rdata = mysql_fetch_assoc($qdata);
-$tdata = mysql_num_rows($qdata);
+$rdata = mysqli_fetch_assoc($qdata);
+$tdata = mysqli_num_rows($qdata);
 
 
 //view //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,22 +79,22 @@ echo '<strong>Tanggal :</strong>
 <strong>No. Nota :</strong> ';
 
 //terpilih
-$qtru = mysql_query("SELECT * FROM nota ".
+$qtru = mysqli_query($koneksi, "SELECT * FROM nota ".
 						"WHERE round(DATE_FORMAT(tgl, '%d')) = '$xtgl1' ".
 						"AND round(DATE_FORMAT(tgl, '%m')) = '$xbln1' ".
 						"AND round(DATE_FORMAT(tgl, '%Y')) = '$xthn1' ".
 						"AND kd = '$notakd'");
-$rtru = mysql_fetch_assoc($qtru);
+$rtru = mysqli_fetch_assoc($qtru);
 $x_notakd = $notakd;
 $x_no_nota = nosql($rtru['no_nota']);
 $x_pelanggan = balikin($rtru['pelanggan']);
 
 
 //terpilih --> total item
-$qtru2 = mysql_query("SELECT * FROM nota_detail ".
+$qtru2 = mysqli_query($koneksi, "SELECT * FROM nota_detail ".
 						"WHERE kd_nota = '$notakd'");
-$rtru2 = mysql_fetch_assoc($qtru2);
-$ttru2 = mysql_num_rows($qtru2);
+$rtru2 = mysqli_fetch_assoc($qtru2);
+$ttru2 = mysqli_num_rows($qtru2);
 $x_nota_items = nosql($ttru2);
 
 echo ''.$x_no_nota.' => ['.$x_nota_items.' Item],
@@ -150,7 +150,7 @@ if ($tdata != 0)
 		</td>
         </tr>';
 		}
-	while ($rdata = mysql_fetch_assoc($qdata));
+	while ($rdata = mysqli_fetch_assoc($qdata));
 	}
 
 echo '</table>';

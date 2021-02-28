@@ -27,12 +27,12 @@ $hajirobe1_session = nosql($_SESSION['hajirobe1_session']);
 
 
 //jika belum login.
-$qbw = mysql_query("SELECT * FROM admin ".
+$qbw = mysqli_query($koneksi, "SELECT * FROM admin ".
 						"WHERE kd = '$kd1_session' ".
 						"AND username = '$username1_session' ".
 						"AND time_login = '$time1_session'");
-$rbw = mysql_fetch_assoc($qbw);
-$tbw = mysql_num_rows($qbw);
+$rbw = mysqli_fetch_assoc($qbw);
+$tbw = mysqli_num_rows($qbw);
 
 if (($tbw == 0)
 	OR (empty($kd1_session))

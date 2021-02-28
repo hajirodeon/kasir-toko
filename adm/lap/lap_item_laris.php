@@ -56,19 +56,19 @@ else if (empty($xthn1))
 else
 	{
 	//netralkan dahulu...!!
-	mysql_query("DELETE FROM item_laris ".
+	mysqli_query($koneksi, "DELETE FROM item_laris ".
 					"WHERE round(bln) = '$xbln1' ".
 					"AND round(thn) = '$xthn1'");
 
 
 	//ambil data dari nota //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	$qnot = mysql_query("SELECT DISTINCT(nota_detail.kd_brg) AS brgkd ".
+	$qnot = mysqli_query($koneksi, "SELECT DISTINCT(nota_detail.kd_brg) AS brgkd ".
 							"FROM nota, nota_detail ".
 							"WHERE nota_detail.kd_nota = nota.kd ".
 							"AND round(DATE_FORMAT(nota.tgl, '%m')) = '$xbln1' ".
 							"AND round(DATE_FORMAT(nota.tgl, '%Y')) = '$xthn1'");
-	$rnot = mysql_fetch_assoc($qnot);
-	$tnot = mysql_num_rows($qnot);
+	$rnot = mysqli_fetch_assoc($qnot);
+	$tnot = mysqli_num_rows($qnot);
 
 	//nek ada
 	if ($tnot != 0)
@@ -81,23 +81,23 @@ else
 			$n_brgkd = nosql($rnot['brgkd']);
 
 			//qty-ne...
-			$qnotx = mysql_query("SELECT SUM(nota_detail.qty) AS qty ".
+			$qnotx = mysqli_query($koneksi, "SELECT SUM(nota_detail.qty) AS qty ".
 									"FROM nota, nota_detail ".
 									"WHERE nota_detail.kd_nota = nota.kd ".
 									"AND nota_detail.kd_brg = '$n_brgkd' ".
 									"AND round(DATE_FORMAT(nota.tgl, '%m')) = '$xbln1' ".
 									"AND round(DATE_FORMAT(nota.tgl, '%Y')) = '$xthn1'");
-			$rnotx = mysql_fetch_assoc($qnotx);
-			$tnotx = mysql_num_rows($qnotx);
+			$rnotx = mysqli_fetch_assoc($qnotx);
+			$tnotx = mysqli_num_rows($qnotx);
 
 			//nilai qty
 			$n_qty = nosql($rnotx['qty']);
 
 			//masukkan
-			mysql_query("INSERT INTO item_laris(kd, bln, thn, kd_brg, jml) VALUES ".
+			mysqli_query($koneksi, "INSERT INTO item_laris(kd, bln, thn, kd_brg, jml) VALUES ".
 							"('$xx', '$xbln1', '$xthn1', '$n_brgkd', '$n_qty')");
 			}
-		while ($rnot = mysql_fetch_assoc($qnot));
+		while ($rnot = mysqli_fetch_assoc($qnot));
 		}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -183,11 +183,11 @@ else
 					"ORDER BY round(item_laris.jml) DESC";
 	$sqlresult = $sqlcount;
 
-	$count = mysql_num_rows(mysql_query($sqlcount));
+	$count = mysqli_num_rows(mysqli_query($sqlcount));
 	$pages = $p->findPages($count, $limit);
-	$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+	$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 	$pagelist = $p->pageList($_GET['page'], $pages, $target);
-	$data = mysql_fetch_array($result);
+	$data = mysqli_fetch_array($result);
 
 	//nek ada
 	if ($count != 0)
@@ -230,7 +230,7 @@ else
 			<td>'.$x_jml.'</td>
 	        </tr>';
 			}
-		while ($data = mysql_fetch_assoc($result));
+		while ($data = mysqli_fetch_assoc($result));
 
 		echo '</table>
 		<table width="800" border="0" cellspacing="0" cellpadding="3">

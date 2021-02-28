@@ -66,9 +66,9 @@ if ($s == "edit")
 	{
 	$kdx = nosql($_REQUEST['kd']);
 
-	$qx = mysql_query("SELECT * FROM m_merk ".
+	$qx = mysqli_query($koneksi, "SELECT * FROM m_merk ".
 						"WHERE kd = '$kdx'");
-	$rowx = mysql_fetch_assoc($qx);
+	$rowx = mysqli_fetch_assoc($qx);
 
 	$merk = balikin($rowx['merk']);
 	}
@@ -94,10 +94,10 @@ if (($_POST['btnSMP']) OR ($_POST['merk']))
 		}
 	else
 		{ ///cek
-		$qcc = mysql_query("SELECT * FROM m_merk ".
+		$qcc = mysqli_query($koneksi, "SELECT * FROM m_merk ".
 								"WHERE merk = '$merk'");
-		$rcc = mysql_fetch_assoc($qcc);
-		$tcc = mysql_num_rows($qcc);
+		$rcc = mysqli_fetch_assoc($qcc);
+		$tcc = mysqli_num_rows($qcc);
 
 
 		//nek duplikasi, lebih dari 1
@@ -118,7 +118,7 @@ if (($_POST['btnSMP']) OR ($_POST['merk']))
 			//jika update
 			if ($s == "edit")
 				{
-				mysql_query("UPDATE m_merk SET merk = '$merk' ".
+				mysqli_query($koneksi, "UPDATE m_merk SET merk = '$merk' ".
 								"WHERE kd = '$kd'");
 
 				//null-kan
@@ -149,7 +149,7 @@ if (($_POST['btnSMP']) OR ($_POST['merk']))
 					}
 				else
 					{
-					mysql_query("INSERT INTO m_merk(kd, merk) VALUES ".
+					mysqli_query($koneksi, "INSERT INTO m_merk(kd, merk) VALUES ".
 									"('$x', '$merk')");
 
 					//null-kan
@@ -184,7 +184,7 @@ if ($_POST['btnHPS'])
 		$kd = nosql($_POST["$yuhu"]);
 
 		//del
-		mysql_query("DELETE FROM m_merk ".
+		mysqli_query($koneksi, "DELETE FROM m_merk ".
 						"WHERE kd = '$kd'");
 		}
 
@@ -212,11 +212,11 @@ $sqlcount = "SELECT * FROM m_merk ".
 				"ORDER BY merk ASC";
 $sqlresult = $sqlcount;
 
-$count = mysql_num_rows(mysql_query($sqlcount));
+$count = mysqli_num_rows(mysqli_query($sqlcount));
 $pages = $p->findPages($count, $limit);
-$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 $pagelist = $p->pageList($_GET['page'], $pages, $target);
-$data = mysql_fetch_array($result);
+$data = mysqli_fetch_array($result);
 
 
 //require
@@ -269,7 +269,7 @@ if ($count != 0)
 		<td>'.$merk.'</td>
         </tr>';
 		}
-	while ($data = mysql_fetch_assoc($result));
+	while ($data = mysqli_fetch_assoc($result));
 	}
 
 

@@ -41,13 +41,13 @@ $diload = "window.print();location.href='$ke';";
 ob_start();
 
 //query
-$qdata = mysql_query("SELECT m_brg.*, m_brg.kd AS mbkd, m_kategori.*, m_satuan.* ".
+$qdata = mysqli_query($koneksi, "SELECT m_brg.*, m_brg.kd AS mbkd, m_kategori.*, m_satuan.* ".
 						"FROM m_brg, m_kategori, m_satuan ".
 						"WHERE m_brg.kd_kategori = m_kategori.kd ".
 						"AND m_brg.kd_satuan = m_satuan.kd ".
 						"ORDER BY m_brg.nama ASC");
-$rdata = mysql_fetch_assoc($qdata);
-$tdata = mysql_num_rows($qdata);
+$rdata = mysqli_fetch_assoc($qdata);
+$tdata = mysqli_num_rows($qdata);
 
 
 
@@ -98,7 +98,7 @@ if ($tdata != 0)
 		<td>'.$satuan.'</td>
         </tr>';
 		}
-	while ($rdata = mysql_fetch_assoc($qdata));
+	while ($rdata = mysqli_fetch_assoc($qdata));
 	}
 
 

@@ -34,11 +34,11 @@ $notakd = nosql($_REQUEST['notakd']);
 
 
 //deteksi pending
-$qcvu = mysql_query("SELECT * FROM nota ".
+$qcvu = mysqli_query($koneksi, "SELECT * FROM nota ".
 						"WHERE pending = 'true' ".
 						"ORDER BY postdate DESC");
-$rcvu = mysql_fetch_assoc($qcvu);
-$tcvu = mysql_num_rows($qcvu);
+$rcvu = mysqli_fetch_assoc($qcvu);
+$tcvu = mysqli_num_rows($qcvu);
 $cvu_notakd = nosql($rcvu['kd']);
 
 if ($tcvu != 0)
@@ -60,10 +60,10 @@ ob_start();
 
 
 //query
-$q = mysql_query("SELECT * FROM nota ".
+$q = mysqli_query($koneksi, "SELECT * FROM nota ".
 					"WHERE kd = '$notakd'");
-$r = mysql_fetch_assoc($q);
-$total = mysql_num_rows($q);
+$r = mysqli_fetch_assoc($q);
+$total = mysqli_num_rows($q);
 $no_nota = nosql($r['no_nota']);
 $tot_total = nosql($r['total']);
 $tot_bayar = nosql($r['total_bayar']);
@@ -98,7 +98,7 @@ echo '<table width="200" border="0" cellspacing="0" cellpadding="3">';
 
 
 //row kolom data
-$qx = mysql_query("SELECT nota_detail.*, nota_detail.qty AS kdqty, ".
+$qx = mysqli_query($koneksi, "SELECT nota_detail.*, nota_detail.qty AS kdqty, ".
 					"nota_detail.subtotal AS kdsub, ".
 					"m_brg.*, m_brg.kode AS mbkod, ".
 					"m_brg.nama AS mbnm, stock.*, m_satuan.* ".
@@ -108,7 +108,7 @@ $qx = mysql_query("SELECT nota_detail.*, nota_detail.qty AS kdqty, ".
 					"AND m_brg.kd_satuan = m_satuan.kd ".
 					"AND nota_detail.kd_nota = '$notakd' ".
 					"ORDER BY m_brg.kode ASC");
-$rqx = mysql_fetch_assoc($qx);
+$rqx = mysqli_fetch_assoc($qx);
 
 do
 	{
@@ -143,7 +143,7 @@ do
 	</td>
 	</tr>';
 	}
-while ($rqx = mysql_fetch_assoc($qx));
+while ($rqx = mysqli_fetch_assoc($qx));
 
 echo '</table>';
 

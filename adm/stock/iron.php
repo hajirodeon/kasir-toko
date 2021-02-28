@@ -63,11 +63,11 @@ $sqlcount = "SELECT m_brg.*, m_brg.kd AS mbkd, m_kategori.*, ".
 
 $sqlresult = $sqlcount;
 
-$count = mysql_num_rows(mysql_query($sqlcount));
+$count = mysqli_num_rows(mysqli_query($sqlcount));
 $pages = $p->findPages($count, $limit);
-$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 $pagelist = $p->pageList($_GET['page'], $pages, $target);
-$data = mysql_fetch_array($result);
+$data = mysqli_fetch_array($result);
 
 
 
@@ -115,18 +115,18 @@ if ($count != 0)
 		$nama = balikin($data['nama']);
 
 		//stock
-		$qto = mysql_query("SELECT * FROM stock ".
+		$qto = mysqli_query($koneksi, "SELECT * FROM stock ".
 								"WHERE kd_brg = '$kd'");
-		$rto = mysql_fetch_assoc($qto);
+		$rto = mysqli_fetch_assoc($qto);
 		$jml_min = nosql($rto['jml_min']);
 		$jml_total = nosql($rto['jml_toko']);
 
 		//habis...?
-		$qhbs = mysql_query("SELECT * FROM stock ".
+		$qhbs = mysqli_query($koneksi, "SELECT * FROM stock ".
 								"WHERE kd_brg = '$kd' ".
 								"AND stock.jml_toko <= '0'");
-		$rhbs = mysql_fetch_assoc($qhbs);
-		$thbs = mysql_num_rows($qhbs);
+		$rhbs = mysqli_fetch_assoc($qhbs);
+		$thbs = mysqli_num_rows($qhbs);
 
 		//nek iya
 		if ($thbs != 0)
@@ -150,7 +150,7 @@ if ($count != 0)
 		<td><strong>'.$hbs_status.'</strong></td>
         </tr>';
 		}
-	while ($data = mysql_fetch_assoc($result));
+	while ($data = mysqli_fetch_assoc($result));
 	}
 
 

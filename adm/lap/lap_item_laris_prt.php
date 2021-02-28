@@ -56,15 +56,15 @@ echo '</td>
 </table>';
 
 //query
-$qdata = mysql_query("SELECT item_laris.*, m_brg.*, m_kategori.* ".
+$qdata = mysqli_query($koneksi, "SELECT item_laris.*, m_brg.*, m_kategori.* ".
 						"FROM item_laris, m_brg, m_kategori ".
 						"WHERE item_laris.kd_brg = m_brg.kd ".
 						"AND m_brg.kd_kategori = m_kategori.kd ".
 						"AND round(item_laris.bln) = '$xbln1' ".
 						"AND round(item_laris.thn) = '$xthn1' ".
 						"ORDER BY round(item_laris.jml) DESC");
-$rdata = mysql_fetch_assoc($qdata);
-$tdata = mysql_num_rows($qdata);
+$rdata = mysqli_fetch_assoc($qdata);
+$tdata = mysqli_num_rows($qdata);
 
 //nek ada
 if ($tdata != 0)
@@ -106,7 +106,7 @@ if ($tdata != 0)
 		<td>'.$x_jml.'</td>
         </tr>';
 		}
-	while ($rdata = mysql_fetch_assoc($qdata));
+	while ($rdata = mysqli_fetch_assoc($qdata));
 
 	echo '</table>';
 	}

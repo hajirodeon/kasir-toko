@@ -126,34 +126,34 @@ No. Nota : ';
 echo "<select name=\"notakd\" onChange=\"MM_jumpMenu('self',this,0)\" class=\"btn-info\">";
 
 //terpilih
-$qtru = mysql_query("SELECT * FROM nota ".
+$qtru = mysqli_query($koneksi, "SELECT * FROM nota ".
 						"WHERE round(DATE_FORMAT(tgl, '%d')) = '$xtgl1' ".
 						"AND round(DATE_FORMAT(tgl, '%m')) = '$xbln1' ".
 						"AND round(DATE_FORMAT(tgl, '%Y')) = '$xthn1' ".
 						"AND kd = '$notakd'");
-$rtru = mysql_fetch_assoc($qtru);
+$rtru = mysqli_fetch_assoc($qtru);
 $x_notakd = $notakd;
 $x_no_nota = nosql($rtru['no_nota']);
 $x_pelanggan = balikin($rtru['pelanggan']);
 $x_total = nosql($rtru['total']);
 
 //terpilih --> total item
-$qtru2 = mysql_query("SELECT * FROM nota_detail ".
+$qtru2 = mysqli_query($koneksi, "SELECT * FROM nota_detail ".
 						"WHERE kd_nota = '$notakd'");
-$rtru2 = mysql_fetch_assoc($qtru2);
-$ttru2 = mysql_num_rows($qtru2);
+$rtru2 = mysqli_fetch_assoc($qtru2);
+$ttru2 = mysqli_num_rows($qtru2);
 $x_nota_items = nosql($ttru2);
 
 echo '<option value="'.$x_notakd.'" selected>'.$x_no_nota.' => ['.$x_nota_items.' Item]. [Pelanggan : '.$x_pelanggan.'].</option>';
 
 //data
-$qtrux = mysql_query("SELECT * FROM nota ".
+$qtrux = mysqli_query($koneksi, "SELECT * FROM nota ".
 						"WHERE round(DATE_FORMAT(tgl, '%d')) = '$xtgl1' ".
 						"AND round(DATE_FORMAT(tgl, '%m')) = '$xbln1' ".
 						"AND round(DATE_FORMAT(tgl, '%Y')) = '$xthn1' ".
 						"AND kd <> '$notakd' ".
 						"ORDER BY round(no_nota) ASC");
-$rtrux = mysql_fetch_assoc($qtrux);
+$rtrux = mysqli_fetch_assoc($qtrux);
 
 do
 	{
@@ -163,16 +163,16 @@ do
 
 
 	//jumlahnya
-	$qyukx = mysql_query("SELECT * FROM nota_detail ".
+	$qyukx = mysqli_query($koneksi, "SELECT * FROM nota_detail ".
 							"WHERE kd_nota = '$i_notakd'");
-	$ryukx = mysql_fetch_assoc($qyukx);
-	$tyukx = mysql_num_rows($qyukx);
+	$ryukx = mysqli_fetch_assoc($qyukx);
+	$tyukx = mysqli_num_rows($qyukx);
 	$i_nota_items = $tyukx;
 
 	echo '<option value="'.$filenya.'?xtgl1='.$xtgl1.'&xbln1='.$xbln1.'&xthn1='.$xthn1.'&notakd='.$i_notakd.'">
 	'.$i_no_nota.' => ['.$i_nota_items.' Item]. [Pelanggan : '.$i_pelanggan.'].</option>';
 	}
-while ($rtrux = mysql_fetch_assoc($qtrux));
+while ($rtrux = mysqli_fetch_assoc($qtrux));
 
 echo '</select>
 </td>
@@ -201,7 +201,7 @@ else if (empty($notakd))
 else
 	{
 	//query
-	$qnot = mysql_query("SELECT nota.*, nota_detail.*, ".
+	$qnot = mysqli_query($koneksi, "SELECT nota.*, nota_detail.*, ".
 							"nota_detail.kd AS ndkd, ".
 							"nota_detail.qty AS ndqty, ".
 							"m_brg.*, m_satuan.*, stock.* ".
@@ -212,8 +212,8 @@ else
 							"AND stock.kd_brg = m_brg.kd ".
 							"AND nota.kd = '$notakd' ".
 							"ORDER BY nota.no_nota ASC");
-	$rnot = mysql_fetch_assoc($qnot);
-	$tnot = mysql_num_rows($qnot);
+	$rnot = mysqli_fetch_assoc($qnot);
+	$tnot = mysqli_num_rows($qnot);
 
 	if ($tnot != 0)
 		{
@@ -267,7 +267,7 @@ else
 			</td>
 	        </tr>';
 			}
-		while ($rnot = mysql_fetch_assoc($qnot));
+		while ($rnot = mysqli_fetch_assoc($qnot));
 
 		echo '</table>
 		<table width="700" border="0" cellspacing="0" cellpadding="3">

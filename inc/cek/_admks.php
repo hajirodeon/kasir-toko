@@ -25,12 +25,12 @@ $pass2_session = nosql($_SESSION['pass2_session']);
 $time2_session = $_SESSION['time2_session'];
 $hajirobe2_session = nosql($_SESSION['hajirobe2_session']);
 
-$qbw = mysql_query("SELECT * FROM admks ".
+$qbw = mysqli_query($koneksi, "SELECT * FROM admks ".
 						"WHERE kd = '$kd2_session' ".
 						"AND username = '$username2_session' ".
 						"AND time_login = '$time2_session'");
-$rbw = mysql_fetch_assoc($qbw);
-$tbw = mysql_num_rows($qbw);
+$rbw = mysqli_fetch_assoc($qbw);
+$tbw = mysqli_num_rows($qbw);
 
 if (($tbw == 0) OR (empty($kd2_session))
 	OR (empty($username2_session))

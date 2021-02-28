@@ -66,9 +66,9 @@ if ($s == "edit")
 	{
 	$kdx = nosql($_REQUEST['kd']);
 
-	$qx = mysql_query("SELECT * FROM m_satuan ".
+	$qx = mysqli_query($koneksi, "SELECT * FROM m_satuan ".
 						"WHERE kd = '$kdx'");
-	$rowx = mysql_fetch_assoc($qx);
+	$rowx = mysqli_fetch_assoc($qx);
 
 	$satuan = balikin($rowx['satuan']);
 	}
@@ -98,10 +98,10 @@ if (($_POST['btnSMP']) OR ($_POST['satuan']))
 		}
 	else
 		{ ///cek
-		$qcc = mysql_query("SELECT * FROM m_satuan ".
+		$qcc = mysqli_query($koneksi, "SELECT * FROM m_satuan ".
 								"WHERE satuan = '$satuan'");
-		$rcc = mysql_fetch_assoc($qcc);
-		$tcc = mysql_num_rows($qcc);
+		$rcc = mysqli_fetch_assoc($qcc);
+		$tcc = mysqli_num_rows($qcc);
 
 
 		//nek duplikasi, lebih dari 1
@@ -122,7 +122,7 @@ if (($_POST['btnSMP']) OR ($_POST['satuan']))
 			//jika update
 			if ($s == "edit")
 				{
-				mysql_query("UPDATE m_satuan SET satuan = '$satuan' ".
+				mysqli_query($koneksi, "UPDATE m_satuan SET satuan = '$satuan' ".
 								"WHERE kd = '$kd'");
 
 				//null-kan
@@ -153,7 +153,7 @@ if (($_POST['btnSMP']) OR ($_POST['satuan']))
 					}
 				else
 					{
-					mysql_query("INSERT INTO m_satuan(kd, satuan) VALUES ".
+					mysqli_query($koneksi, "INSERT INTO m_satuan(kd, satuan) VALUES ".
 									"('$x', '$satuan')");
 
 					//null-kan
@@ -188,7 +188,7 @@ if ($_POST['btnHPS'])
 		$kd = nosql($_POST["$yuhu"]);
 
 		//del
-		mysql_query("DELETE FROM m_satuan ".
+		mysqli_query($koneksi, "DELETE FROM m_satuan ".
 						"WHERE kd = '$kd'");
 		}
 
@@ -215,11 +215,11 @@ $sqlcount = "SELECT * FROM m_satuan ".
 				"ORDER BY satuan ASC";
 $sqlresult = $sqlcount;
 
-$count = mysql_num_rows(mysql_query($sqlcount));
+$count = mysqli_num_rows(mysqli_query($sqlcount));
 $pages = $p->findPages($count, $limit);
-$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 $pagelist = $p->pageList($_GET['page'], $pages, $target);
-$data = mysql_fetch_array($result);
+$data = mysqli_fetch_array($result);
 
 
 //require
@@ -272,7 +272,7 @@ if ($count != 0)
 		<td>'.$satuan.'</td>
         </tr>';
 		}
-	while ($data = mysql_fetch_assoc($result));
+	while ($data = mysqli_fetch_assoc($result));
 	}
 
 

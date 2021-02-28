@@ -41,15 +41,15 @@ echo $konten;
 
 //kill process //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 set_time_limit(600);  //set maksimal loading : 600 detik atau 10 menit
-$result=mysql_query("show processlist");
-while ($row=mysql_fetch_array($result))
+$result=mysqli_query($koneksi, "show processlist");
+while ($row=mysqli_fetch_array($result))
 	{
 	$process_id=$row["Id"];
 
 	if (($row["Time"] > 0) OR ($row["Command"]=="Sleep"))
 		{
 		$sql="kill $process_id";
-		mysql_query($sql);
+		mysqli_query($sql);
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

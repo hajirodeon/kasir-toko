@@ -120,10 +120,10 @@ if ($_POST['btnSMP'])
 		$xhjx = nosql($_POST["$xhj1"]);
 
 		//cek, perubahan nilai ?
-		$qcc = mysql_query("SELECT * FROM stock ".
+		$qcc = mysqli_query($koneksi, "SELECT * FROM stock ".
 							"WHERE kd_brg = '$xkdx'");
-		$rcc = mysql_fetch_assoc($qcc);
-		$tcc = mysql_num_rows($qcc);
+		$rcc = mysqli_fetch_assoc($qcc);
+		$tcc = mysqli_num_rows($qcc);
 		$jml_tk = nosql($rcc['jml_toko']);
 		$jml_min = nosql($rcc['jml_min']);
 		$hrg_beli = nosql($rcc['hrg_beli']);
@@ -161,7 +161,7 @@ if ($_POST['btnSMP'])
 		if (($jml_gd != $xgdx) OR ($jml_tk != $xtkx) OR ($jml_min != $xjmx))
 			{
 			//sesuaikan
-			mysql_query("UPDATE stock SET jml_toko = '$xtkx', jml_min = '$xjmx' ".
+			mysqli_query($koneksi, "UPDATE stock SET jml_toko = '$xtkx', jml_min = '$xjmx' ".
 							"WHERE kd_brg = '$xkdx'");
 			}
 
@@ -169,7 +169,7 @@ if ($_POST['btnSMP'])
 		if (($hrg_beli != $xhbx) OR ($hrg_jual != $xhjx))
 			{
 			//sesuaikan
-			mysql_query("UPDATE stock SET hrg_beli = '$xhbx', ".
+			mysqli_query($koneksi, "UPDATE stock SET hrg_beli = '$xhbx', ".
 							"hrg_jual = '$xhjx' ".
 							"WHERE kd_brg = '$xkdx'");
 			}
@@ -227,12 +227,12 @@ if (($_POST['btnCRI']) OR ($_POST['kunci']))
 
 			$sqlresult = $sqlcount;
 
-			$count = mysql_num_rows(mysql_query($sqlcount));
+			$count = mysqli_num_rows(mysqli_query($sqlcount));
 			$pages = $p->findPages($count, $limit);
-			$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+			$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 			$target = "$filenya?katcari=$katcari&kunci=$kunci";
 			$pagelist = $p->pageList($_GET['page'], $pages, $target);
-			$data = mysql_fetch_array($result);
+			$data = mysqli_fetch_array($result);
 			}
 
 		//nek nama ==> c02
@@ -249,12 +249,12 @@ if (($_POST['btnCRI']) OR ($_POST['kunci']))
 
 			$sqlresult = $sqlcount;
 
-			$count = mysql_num_rows(mysql_query($sqlcount));
+			$count = mysqli_num_rows(mysqli_query($sqlcount));
 			$pages = $p->findPages($count, $limit);
-			$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+			$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 			$target = "$filenya?katcari=$katcari&kunci=$kunci";
 			$pagelist = $p->pageList($_GET['page'], $pages, $target);
-			$data = mysql_fetch_array($result);
+			$data = mysqli_fetch_array($result);
 			}
 
 		//nek kategori ==> c03
@@ -271,12 +271,12 @@ if (($_POST['btnCRI']) OR ($_POST['kunci']))
 
 			$sqlresult = $sqlcount;
 
-			$count = mysql_num_rows(mysql_query($sqlcount));
+			$count = mysqli_num_rows(mysqli_query($sqlcount));
 			$pages = $p->findPages($count, $limit);
-			$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+			$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 			$target = "$filenya?katcari=$katcari&kunci=$kunci";
 			$pagelist = $p->pageList($_GET['page'], $pages, $target);
-			$data = mysql_fetch_array($result);
+			$data = mysqli_fetch_array($result);
 			}
 
 		//nek merk ==> c04
@@ -293,12 +293,12 @@ if (($_POST['btnCRI']) OR ($_POST['kunci']))
 
 			$sqlresult = $sqlcount;
 
-			$count = mysql_num_rows(mysql_query($sqlcount));
+			$count = mysqli_num_rows(mysqli_query($sqlcount));
 			$pages = $p->findPages($count, $limit);
-			$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+			$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 			$target = "$filenya?katcari=$katcari&kunci=$kunci";
 			$pagelist = $p->pageList($_GET['page'], $pages, $target);
-			$data = mysql_fetch_array($result);
+			$data = mysqli_fetch_array($result);
 			}
 
 		//nek satuan ==> c05
@@ -315,12 +315,12 @@ if (($_POST['btnCRI']) OR ($_POST['kunci']))
 
 			$sqlresult = $sqlcount;
 
-			$count = mysql_num_rows(mysql_query($sqlcount));
+			$count = mysqli_num_rows(mysqli_query($sqlcount));
 			$pages = $p->findPages($count, $limit);
-			$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+			$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 			$target = "$filenya?katcari=$katcari&kunci=$kunci";
 			$pagelist = $p->pageList($_GET['page'], $pages, $target);
-			$data = mysql_fetch_array($result);
+			$data = mysqli_fetch_array($result);
 			}
 		}
 	}
@@ -340,12 +340,12 @@ else
 
 		$sqlresult = $sqlcount;
 
-		$count = mysql_num_rows(mysql_query($sqlcount));
+		$count = mysqli_num_rows(mysqli_query($sqlcount));
 		$pages = $p->findPages($count, $limit);
-		$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+		$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 		$target = "$filenya?katcari=$katcari&kunci=$kunci";
 		$pagelist = $p->pageList($_GET['page'], $pages, $target);
-		$data = mysql_fetch_array($result);
+		$data = mysqli_fetch_array($result);
 		}
 
 	//nek nama ==> c02
@@ -362,12 +362,12 @@ else
 
 		$sqlresult = $sqlcount;
 
-		$count = mysql_num_rows(mysql_query($sqlcount));
+		$count = mysqli_num_rows(mysqli_query($sqlcount));
 		$pages = $p->findPages($count, $limit);
-		$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+		$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 		$target = "$filenya?katcari=$katcari&kunci=$kunci";
 		$pagelist = $p->pageList($_GET['page'], $pages, $target);
-		$data = mysql_fetch_array($result);
+		$data = mysqli_fetch_array($result);
 		}
 
 	//nek kategori ==> c03
@@ -384,12 +384,12 @@ else
 
 		$sqlresult = $sqlcount;
 
-		$count = mysql_num_rows(mysql_query($sqlcount));
+		$count = mysqli_num_rows(mysqli_query($sqlcount));
 		$pages = $p->findPages($count, $limit);
-		$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+		$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 		$target = "$filenya?katcari=$katcari&kunci=$kunci";
 		$pagelist = $p->pageList($_GET['page'], $pages, $target);
-		$data = mysql_fetch_array($result);
+		$data = mysqli_fetch_array($result);
 		}
 
 	//nek merk ==> c04
@@ -406,12 +406,12 @@ else
 
 		$sqlresult = $sqlcount;
 
-		$count = mysql_num_rows(mysql_query($sqlcount));
+		$count = mysqli_num_rows(mysqli_query($sqlcount));
 		$pages = $p->findPages($count, $limit);
-		$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+		$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 		$target = "$filenya?katcari=$katcari&kunci=$kunci";
 		$pagelist = $p->pageList($_GET['page'], $pages, $target);
-		$data = mysql_fetch_array($result);
+		$data = mysqli_fetch_array($result);
 		}
 
 	//nek satuan ==> c05
@@ -428,12 +428,12 @@ else
 
 		$sqlresult = $sqlcount;
 
-		$count = mysql_num_rows(mysql_query($sqlcount));
+		$count = mysqli_num_rows(mysqli_query($sqlcount));
 		$pages = $p->findPages($count, $limit);
-		$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+		$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 		$target = "$filenya?katcari=$katcari&kunci=$kunci";
 		$pagelist = $p->pageList($_GET['page'], $pages, $target);
-		$data = mysql_fetch_array($result);
+		$data = mysqli_fetch_array($result);
 		}
 	}
 
@@ -557,9 +557,9 @@ if ((!empty($katcari)) AND (!empty($kunci)))
 			$hrg_jual = nosql($data['hrg_jual']);
 
 			//jml. rusak ////////////////////////////////////////////////////////////
-			$qjrus = mysql_query("SELECT SUM(jml) AS jrus FROM stock_rusak ".
+			$qjrus = mysqli_query($koneksi, "SELECT SUM(jml) AS jrus FROM stock_rusak ".
 									"WHERE kd_brg = '$kd'");
-			$rjrus = mysql_fetch_assoc($qjrus);
+			$rjrus = mysqli_fetch_assoc($qjrus);
 			$jml_rusak = nosql($rjrus['jrus']);
 
 			//nek null
@@ -570,9 +570,9 @@ if ((!empty($katcari)) AND (!empty($kunci)))
 
 
 			//jml. hilang ////////////////////////////////////////////////////////////
-			$qjhil = mysql_query("SELECT SUM(jml) AS jhil FROM stock_hilang ".
+			$qjhil = mysqli_query($koneksi, "SELECT SUM(jml) AS jhil FROM stock_hilang ".
 									"WHERE kd_brg = '$kd'");
-			$rjhil = mysql_fetch_assoc($qjhil);
+			$rjhil = mysqli_fetch_assoc($qjhil);
 			$jml_hilang = nosql($rjhil['jhil']);
 
 			//nek null
@@ -699,7 +699,7 @@ if ((!empty($katcari)) AND (!empty($kunci)))
 			</td>
 	        </tr>';
 			}
-		while ($data = mysql_fetch_assoc($result));
+		while ($data = mysqli_fetch_assoc($result));
 		}
 
 

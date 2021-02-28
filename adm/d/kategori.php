@@ -67,9 +67,9 @@ if ($s == "edit")
 	{
 	$kdx = nosql($_REQUEST['kd']);
 
-	$qx = mysql_query("SELECT * FROM m_kategori ".
+	$qx = mysqli_query($koneksi, "SELECT * FROM m_kategori ".
 						"WHERE kd = '$kdx'");
-	$rowx = mysql_fetch_assoc($qx);
+	$rowx = mysqli_fetch_assoc($qx);
 
 	$kategori = balikin($rowx['kategori']);
 	}
@@ -95,10 +95,10 @@ if (($_POST['btnSMP']) OR ($_POST['kategori']))
 		}
 	else
 		{ ///cek
-		$qcc = mysql_query("SELECT * FROM m_kategori ".
+		$qcc = mysqli_query($koneksi, "SELECT * FROM m_kategori ".
 								"WHERE kategori = '$kategori'");
-		$rcc = mysql_fetch_assoc($qcc);
-		$tcc = mysql_num_rows($qcc);
+		$rcc = mysqli_fetch_assoc($qcc);
+		$tcc = mysqli_num_rows($qcc);
 
 
 		//nek duplikasi, lebih dari 1
@@ -119,7 +119,7 @@ if (($_POST['btnSMP']) OR ($_POST['kategori']))
 			//jika update
 			if ($s == "edit")
 				{
-				mysql_query("UPDATE m_kategori SET kategori = '$kategori' ".
+				mysqli_query($koneksi, "UPDATE m_kategori SET kategori = '$kategori' ".
 								"WHERE kd = '$kd'");
 
 				//null-kan
@@ -150,7 +150,7 @@ if (($_POST['btnSMP']) OR ($_POST['kategori']))
 					}
 				else
 					{
-					mysql_query("INSERT INTO m_kategori(kd, kategori) VALUES ".
+					mysqli_query($koneksi, "INSERT INTO m_kategori(kd, kategori) VALUES ".
 									"('$x', '$kategori')");
 
 					//null-kan
@@ -185,7 +185,7 @@ if ($_POST['btnHPS'])
 		$kd = nosql($_POST["$yuhu"]);
 
 		//del
-		mysql_query("DELETE FROM m_kategori ".
+		mysqli_query($koneksi, "DELETE FROM m_kategori ".
 						"WHERE kd = '$kd'");
 		}
 
@@ -212,11 +212,11 @@ $sqlcount = "SELECT * FROM m_kategori ".
 				"ORDER BY kategori ASC";
 $sqlresult = $sqlcount;
 
-$count = mysql_num_rows(mysql_query($sqlcount));
+$count = mysqli_num_rows(mysqli_query($sqlcount));
 $pages = $p->findPages($count, $limit);
-$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 $pagelist = $p->pageList($_GET['page'], $pages, $target);
-$data = mysql_fetch_array($result);
+$data = mysqli_fetch_array($result);
 
 
 //require
@@ -269,7 +269,7 @@ if ($count != 0)
 		<td>'.$kategori.'</td>
         </tr>';
 		}
-	while ($data = mysql_fetch_assoc($result));
+	while ($data = mysqli_fetch_assoc($result));
 	}
 
 

@@ -80,12 +80,12 @@ $sqlcount = "SELECT DISTINCT(kd_brg) ".
 
 $sqlresult = $sqlcount;
 
-$count = mysql_num_rows(mysql_query($sqlcount));
+$count = mysqli_num_rows(mysqli_query($sqlcount));
 $pages = $p->findPages($count, $limit);
-$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 $target = "$filenya?xtgl1=$xtgl1&xbln1=$xbln1&xthn1=$xthn1";
 $pagelist = $p->pageList($_GET['page'], $pages, $target);
-$data = mysql_fetch_array($result);
+$data = mysqli_fetch_array($result);
 
 //require
 require("../../inc/js/jumpmenu.js");
@@ -191,26 +191,26 @@ else
 			$brgkd = nosql($data['kd_brg']);
 
 			//artinya....
-			$qbrg = mysql_query("SELECT m_brg.*, m_satuan.* ".
+			$qbrg = mysqli_query($koneksi, "SELECT m_brg.*, m_satuan.* ".
 									"FROM m_brg, m_satuan ".
 									"WHERE m_brg.kd_satuan = m_satuan.kd ".
 									"AND m_brg.kd = '$brgkd'");
-			$rbrg = mysql_fetch_assoc($qbrg);
-			$tbrg = mysql_num_rows($qbrg);
+			$rbrg = mysqli_fetch_assoc($qbrg);
+			$tbrg = mysqli_num_rows($qbrg);
 			$brg_kode = balikin($rbrg['kode']);
 			$brg_nama = balikin($rbrg['nama']);
 			$brg_satuan = balikin($rbrg['satuan']);
 
 
 			//jumlahnya
-			$qjml = mysql_query("SELECT SUM(qty) AS jml ".
+			$qjml = mysqli_query($koneksi, "SELECT SUM(qty) AS jml ".
 									"FROM nota, nota_detail ".
 									"WHERE nota_detail.kd_nota = nota.kd ".
 									"AND round(DATE_FORMAT(nota.tgl, '%d')) = '$xtgl1' ".
 									"AND round(DATE_FORMAT(nota.tgl, '%m')) = '$xbln1' ".
 									"AND round(DATE_FORMAT(nota.tgl, '%Y')) = '$xthn1' ".
 									"AND nota_detail.kd_brg = '$brgkd'");
-			$rjml = mysql_fetch_assoc($qjml);
+			$rjml = mysqli_fetch_assoc($qjml);
 			$jml_qty = nosql($rjml['jml']);
 
 			echo "<tr bgcolor=\"$warna\" onmouseover=\"this.bgColor='$warnaover';\" onmouseout=\"this.bgColor='$warna';\">";
@@ -221,7 +221,7 @@ else
 			</td>
 	        </tr>';
 			}
-		while ($data = mysql_fetch_assoc($result));
+		while ($data = mysqli_fetch_assoc($result));
 
 		echo '</table>
 		<table width="500" border="0" cellspacing="0" cellpadding="3">

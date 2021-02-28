@@ -56,7 +56,7 @@ if ($_POST['btnOK'])
 	else
 		{
 		//simpan
-		mysql_query("UPDATE nota SET total_bayar = '$bayar', ".
+		mysqli_query($koneksi, "UPDATE nota SET total_bayar = '$bayar', ".
 						"total_kembali = '$kembalian' ".
 						"WHERE kd = '$notakd'");
 
@@ -84,20 +84,20 @@ require("../../inc/js/number.js");
 
 //view //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //ketahui total e...
-$qtote = mysql_query("SELECT SUM(subtotal) AS total FROM nota_detail ".
+$qtote = mysqli_query($koneksi, "SELECT SUM(subtotal) AS total FROM nota_detail ".
 						"WHERE kd_nota = '$notakd'");
-$rtote = mysql_fetch_assoc($qtote);
+$rtote = mysqli_fetch_assoc($qtote);
 $tote_totalx = nosql($rtote['total']);
 
 //simpan nota & detail
-mysql_query("UPDATE nota SET total = '$tote_totalx', ".
+mysqli_query($koneksi, "UPDATE nota SET total = '$tote_totalx', ".
 				"pending = 'false' ".
 				"WHERE kd = '$notakd'");
 
 //total e.
-$qnot = mysql_query("SELECT * FROM nota ".
+$qnot = mysqli_query($koneksi, "SELECT * FROM nota ".
 						"WHERE kd = '$notakd'");
-$rnot = mysql_fetch_assoc($qnot);
+$rnot = mysqli_fetch_assoc($qnot);
 $not_total = $tote_totalx;
 $not_bayar = nosql($rnot['total_bayar']);
 $not_kembalian = nosql($rnot['total_kembali']);

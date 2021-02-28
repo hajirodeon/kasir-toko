@@ -73,23 +73,23 @@ if ($_POST['btnTBH'])
 	else
 		{
 		//bgkd...
-		$qbg = mysql_query("SELECT * FROM m_brg ".
+		$qbg = mysqli_query($koneksi, "SELECT * FROM m_brg ".
 								"WHERE kode = '$kode'");
-		$rbg = mysql_fetch_assoc($qbg);
-		$tbg = mysql_num_rows($qbg);
+		$rbg = mysqli_fetch_assoc($qbg);
+		$tbg = mysqli_num_rows($qbg);
 		$bgkd = nosql($rbg['kd']);
 
 		//nek ada
 		if ($tbg != 0)
 			{
 			//update stock toko
-			mysql_query("UPDATE stock ".
+			mysqli_query($koneksi, "UPDATE stock ".
 							"SET jml_toko = jml_toko - '$jml' ".
 							"WHERE kd_brg = '$bgkd'");
 
 
 			//query
-			mysql_query("INSERT INTO stock_hilang(kd, kd_brg, jml, postdate) VALUES ".
+			mysqli_query($koneksi, "INSERT INTO stock_hilang(kd, kd_brg, jml, postdate) VALUES ".
 							"('$x', '$bgkd', '$jml', '$today')");
 
 
@@ -135,7 +135,7 @@ if ($_POST['btnHPS'])
 		$yuhu = "$yuk$ongko";
 		$kd = nosql($_POST["$yuhu"]);
 
-		mysql_query("DELETE FROM stock_hilang ".
+		mysqli_query($koneksi, "DELETE FROM stock_hilang ".
 						"WHERE kd = '$kd'");
 		}
 
@@ -169,11 +169,11 @@ $sqlcount = "SELECT m_brg.*, m_kategori.*, m_satuan.*, stock_hilang.*, ".
 				"ORDER BY m_brg.kode ASC";
 $sqlresult = $sqlcount;
 
-$count = mysql_num_rows(mysql_query($sqlcount));
+$count = mysqli_num_rows(mysqli_query($sqlcount));
 $pages = $p->findPages($count, $limit);
-$result = mysql_query("$sqlresult LIMIT ".$start.", ".$limit);
+$result = mysqli_query($koneksi, "$sqlresult LIMIT ".$start.", ".$limit);
 $pagelist = $p->pageList($_GET['page'], $pages, $target);
-$data = mysql_fetch_array($result);
+$data = mysqli_fetch_array($result);
 
 
 echo '
@@ -235,19 +235,19 @@ if (empty($gdkd))
 	}
 else
 	{
-	$qgd = mysql_query("SELECT * FROM m_gudang ".
+	$qgd = mysqli_query($koneksi, "SELECT * FROM m_gudang ".
 							"WHERE kd = '$gdkd'");
-	$rgd = mysql_fetch_assoc($qgd);
+	$rgd = mysqli_fetch_assoc($qgd);
 	$gd = balikin($rgd['gudang']);
 
 	echo '<option value="'.$gdkd.'" selected>'.$gd.'</option>';
 	}
 
 //gudang
-$qgu = mysql_query("SELECT * FROM m_gudang ".
+$qgu = mysqli_query($koneksi, "SELECT * FROM m_gudang ".
 						"WHERE kd <> '$gdkd' ".
 						"ORDER BY gudang ASC");
-$rgu = mysql_fetch_assoc($qgu);
+$rgu = mysqli_fetch_assoc($qgu);
 
 do
 	{
@@ -256,7 +256,7 @@ do
 
 	echo '<option value="'.$filenya.'?gdkd='.$gukd.'">'.$gu.'</option>';
 	}
-while ($rgu = mysql_fetch_assoc($qgu));
+while ($rgu = mysqli_fetch_assoc($qgu));
 
 echo '</select>,
 Kode :
@@ -332,7 +332,7 @@ if ($count != 0)
 		<td>'.$gudang.'</td>
         </tr>';
 		}
-	while ($data = mysql_fetch_assoc($result));
+	while ($data = mysqli_fetch_assoc($result));
 	}
 
 
